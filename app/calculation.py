@@ -9,26 +9,27 @@ from app.exceptions import OperationError
 @dataclass
 class Calculation:
 
+
+    operation_type: str
+    operand1: Decimal
+    operand2: Decimal
+
+    op: object = field(init=False)
     result: Decimal = field(init=False)
     timestamp: datetime.datetime = field(default_factory=datetime.datetime.now)
-
-
-    def __init__(self, operation_type: str, operand1: Decimal, operand2: Decimal):
-        self.operation_type = operation_type
-        self.op = OperationFactory.create_operation(operation_type)
-        if not self.op:
-            raise OperationError(f"Unknowwn operation: {operation_type}")
-        self.operand1 = operand1
-        self.operand2 = operand2
-
     
     def __post_init__(self):
+        try:
+            self.op = OperationFactory.create_operation(self.operation_type)
+        except ValueError:
+            raise OperationError(f"Unknown operation: {self.operation_type}")
+
         self.result = self.calculate()
 
-    def calculate(self):
+    def calculate(self) -> Decimal:
         try:
-            return self.op(self.operand1, self.operand2)
-        except(InvalidOperation, ValueError, ArithmeticError, OperationError) as e:
+            return self.op.execute(self.operand1, self.operand2)
+        except (InvalidOperation, ValueError, ArithmeticError, OperationError) as e:
             raise OperationError(f"Operation failed: {str(e)}")
         
     

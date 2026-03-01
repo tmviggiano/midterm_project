@@ -61,11 +61,11 @@ class TestAddition(BaseOperationTest):
 
     operation_class = Addition
     valid_test_cases = {
-        "positive_numbers": {"a": "5", "b": "3", "expected": "8"},
-        "negative_numbers": {"a": "-5", "b": "-3", "expected": "-8"},
-        "mixed_signs": {"a": "-5", "b": "3", "expected": "-2"},
+        "positive_numbers": {"a": "4", "b": "3", "expected": "7"},
+        "negative_numbers": {"a": "-4", "b": "-3", "expected": "-7"},
+        "mixed_signs": {"a": "-4", "b": "3", "expected": "-1"},
         "zero_sum": {"a": "5", "b": "-5", "expected": "0"},
-        "decimals": {"a": "5.5", "b": "3.3", "expected": "8.8"},
+        "decimals": {"a": "4.5", "b": "3.3", "expected": "7.8"},
         "large_numbers": {
             "a": "1e10",
             "b": "1e10",
@@ -80,11 +80,11 @@ class TestSubtraction(BaseOperationTest):
 
     operation_class = Subtraction
     valid_test_cases = {
-        "positive_numbers": {"a": "5", "b": "3", "expected": "2"},
-        "negative_numbers": {"a": "-5", "b": "-3", "expected": "-2"},
-        "mixed_signs": {"a": "-5", "b": "3", "expected": "-8"},
+        "positive_numbers": {"a": "4", "b": "3", "expected": "1"},
+        "negative_numbers": {"a": "-4", "b": "-3", "expected": "-1"},
+        "mixed_signs": {"a": "-4", "b": "3", "expected": "-7"},
         "zero_result": {"a": "5", "b": "5", "expected": "0"},
-        "decimals": {"a": "5.5", "b": "3.3", "expected": "2.2"},
+        "decimals": {"a": "4.5", "b": "3.3", "expected": "1.2"},
         "large_numbers": {
             "a": "1e10",
             "b": "1e9",
@@ -99,11 +99,11 @@ class TestMultiplication(BaseOperationTest):
 
     operation_class = Multiplication
     valid_test_cases = {
-        "positive_numbers": {"a": "5", "b": "3", "expected": "15"},
-        "negative_numbers": {"a": "-5", "b": "-3", "expected": "15"},
-        "mixed_signs": {"a": "-5", "b": "3", "expected": "-15"},
+        "positive_numbers": {"a": "4", "b": "3", "expected": "12"},
+        "negative_numbers": {"a": "-4", "b": "-3", "expected": "12"},
+        "mixed_signs": {"a": "-4", "b": "3", "expected": "-12"},
         "multiply_by_zero": {"a": "5", "b": "0", "expected": "0"},
-        "decimals": {"a": "5.5", "b": "3.3", "expected": "18.15"},
+        "decimals": {"a": "4.5", "b": "3.3", "expected": "14.85"},
         "large_numbers": {
             "a": "1e5",
             "b": "1e5",
@@ -118,9 +118,9 @@ class TestDivision(BaseOperationTest):
 
     operation_class = Division
     valid_test_cases = {
-        "positive_numbers": {"a": "6", "b": "2", "expected": "3"},
-        "negative_numbers": {"a": "-6", "b": "-2", "expected": "3"},
-        "mixed_signs": {"a": "-6", "b": "2", "expected": "-3"},
+        "positive_numbers": {"a": "8", "b": "2", "expected": "4"},
+        "negative_numbers": {"a": "-8", "b": "-2", "expected": "4"},
+        "mixed_signs": {"a": "-8", "b": "2", "expected": "-4"},
         "decimals": {"a": "5.5", "b": "2", "expected": "2.75"},
         "divide_zero": {"a": "0", "b": "5", "expected": "0"},
     }
@@ -139,11 +139,11 @@ class TestPower(BaseOperationTest):
 
     operation_class = Power
     valid_test_cases = {
-        "positive_base_and_exponent": {"a": "2", "b": "3", "expected": "8"},
-        "zero_exponent": {"a": "5", "b": "0", "expected": "1"},
-        "one_exponent": {"a": "5", "b": "1", "expected": "5"},
+        "positive_base_and_exponent": {"a": "3", "b": "3", "expected": "27"},
+        "zero_exponent": {"a": "9", "b": "0", "expected": "1"},
+        "one_exponent": {"a": "3", "b": "1", "expected": "3"},
         "decimal_base": {"a": "2.5", "b": "2", "expected": "6.25"},
-        "zero_base": {"a": "0", "b": "5", "expected": "0"},
+        "zero_base": {"a": "0", "b": "7", "expected": "0"},
     }
     invalid_test_cases = {
         "negative_exponent": {
@@ -160,7 +160,7 @@ class TestRoot(BaseOperationTest):
 
     operation_class = Root
     valid_test_cases = {
-        "square_root": {"a": "9", "b": "2", "expected": "3"},
+        "square_root": {"a": "4", "b": "2", "expected": "2"},
         "cube_root": {"a": "27", "b": "3", "expected": "3"},
         "fourth_root": {"a": "16", "b": "4", "expected": "2"},
         "decimal_root": {"a": "2.25", "b": "2", "expected": "1.5"},
