@@ -86,6 +86,11 @@ class Division(Operation):
 @OperationFactory.register_operations("power")    
 class Power(Operation):
 
+    def validate_operands(self, a: Decimal, b: Decimal) -> None:
+        super().validate_operands(a, b)
+        if b < 0:
+            raise ValidationError("Negative exponents not supported")
+
     def execute(self, a: Decimal, b: Decimal) -> Decimal:
         self.validate_operands(a,b)
         return Decimal((float(a) ** float(b)))
