@@ -4,6 +4,24 @@ from typing import Dict
 from app.exceptions import ValidationError
 
 
+
+class Operation(ABC):
+    """
+    Abstract base class for calculator
+    """
+
+
+    @abstractmethod
+    def execute(self, a: Decimal, b: Decimal) -> Decimal:
+        pass # pragma: no cover
+
+    def validate_operands(self, a: Decimal, b: Decimal)-> None:
+        pass
+    def __str__(self):
+        return self.__class__.__name__
+    
+
+
 class OperationFactory:
 
     _operations: Dict[str, type] = {}
@@ -31,25 +49,6 @@ class OperationFactory:
         if not operation_class:
             raise ValueError(f"Unknown operation: {operation_type}")
         return operation_class()
-
-
-
-
-class Operation(ABC):
-    """
-    Abstract base class for calculator
-    """
-
-
-    @abstractmethod
-    def execute(self, a: Decimal, b: Decimal) -> Decimal:
-        pass # pragma: no cover
-
-    def validate_operands(self, a: Decimal, b: Decimal)-> None:
-        pass
-    def __str__(self):
-        return self.__class__.__name__
-    
 
 @OperationFactory.register_operations("add")
 class Addition(Operation):
