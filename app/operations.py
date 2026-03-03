@@ -126,7 +126,7 @@ class Modulus(Operation):
         return Decimal(float(a) % float(b))
     
 
-@OperationFactory.register_operations("int_division")
+@OperationFactory.register_operations("int_divide")
 class Integer_Division(Operation):
 
     def validate_operands(self, a: Decimal, b: Decimal) ->None:
@@ -146,4 +146,17 @@ class Absolute_Difference(Operation):
         self.validate_operands(a,b)
         return abs(a-b)
     
+@OperationFactory.register_operations("percent")
+class Percentage_Calculation(Operation):
+    def validate_operands(self, a, b):
+        super().validate_operands(a, b)
+
+        if a < 0 or b < 0:
+            raise ValidationError("Positive numbers only!")
+        
+        if b == 0:
+            raise ValidationError("Division by zero is not allowed")
+        
+    def execute(self, a: Decimal, b: Decimal) -> Decimal:
+        return ((a/b)*100)
 

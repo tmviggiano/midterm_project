@@ -14,7 +14,8 @@ from app.operations import (
     OperationFactory,
     Absolute_Difference,
     Integer_Division,
-    Modulus
+    Modulus,
+    Percentage_Calculation
 )
 
 
@@ -261,3 +262,36 @@ def test_duplicate_registration_raises():
         @OperationFactory.register_operations("add")
         class AnotherAdd(Addition):
             pass
+
+
+class TestPercent(BaseOperationTest):
+    """Test Division operation."""
+
+    operation_class = Percentage_Calculation
+    valid_test_cases = {
+        "positive_numbers": {"a": "2", "b": "4", "expected": "50"},
+        "negative_numbers": {"a": "3", "b": "4", "expected": "75"},
+        "mixed_signs": {"a": "8", "b": "2", "expected": "400"},
+        "decimals": {"a": "5.5", "b": "2", "expected": "275"},
+        "divide_zero": {"a": "0", "b": "5", "expected": "0"},
+    }
+    invalid_test_cases = {
+        "divide_by_zero": {
+            "a": "5",
+            "b": "0",
+            "error": ValidationError,
+            "message": "Division by zero is not allowed"
+        },
+        "negative_a" : {
+            "a": "-5",
+            "b": "7",
+            "error": ValidationError,
+            "message": "Positive numbers only!"
+        },
+        "negative_b" : {
+            "a": "5",
+            "b": "-7",
+            "error": ValidationError,
+            "message": "Positive numbers only!"
+        }
+    }
