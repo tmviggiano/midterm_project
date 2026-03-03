@@ -158,5 +158,6 @@ class Percentage_Calculation(Operation):
             raise ValidationError("Division by zero is not allowed")
         
     def execute(self, a: Decimal, b: Decimal) -> Decimal:
+        self.validate_operands(a,b)
         return ((a/b)*100)
 
