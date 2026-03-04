@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from decimal import Decimal
-from typing import Dict
+from typing import Dict, List
 from app.exceptions import ValidationError
 
 
@@ -49,6 +49,11 @@ class OperationFactory:
         if not operation_class:
             raise ValueError(f"Unknown operation: {operation_type}")
         return operation_class()
+    
+    @classmethod
+    def get_operations(cls) -> List[str]:
+
+        return cls._operations.keys()
 
 @OperationFactory.register_operations("add")
 class Addition(Operation):
@@ -126,7 +131,7 @@ class Modulus(Operation):
         return Decimal(float(a) % float(b))
     
 
-@OperationFactory.register_operations("int_division")
+@OperationFactory.register_operations("int_divide")
 class Integer_Division(Operation):
 
     def validate_operands(self, a: Decimal, b: Decimal) ->None:
@@ -146,4 +151,18 @@ class Absolute_Difference(Operation):
         self.validate_operands(a,b)
         return abs(a-b)
     
+@OperationFactory.register_operations("percent")
+class Percentage_Calculation(Operation):
+    def validate_operands(self, a, b):
+        super().validate_operands(a, b)
+
+        if a < 0 or b < 0:
+            raise ValidationError("Positive numbers only!")
+        
+        if b == 0:
+            raise ValidationError("Division by zero is not allowed")
+        
+    def execute(self, a: Decimal, b: Decimal) -> Decimal:
+        self.validate_operands(a,b)
+        return ((a/b)*100)
 
