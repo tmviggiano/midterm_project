@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from decimal import Decimal
-from typing import Dict
+from typing import Dict, List
 from app.exceptions import ValidationError
 
 
@@ -49,6 +49,11 @@ class OperationFactory:
         if not operation_class:
             raise ValueError(f"Unknown operation: {operation_type}")
         return operation_class()
+    
+    @classmethod
+    def get_operations(cls) -> List[str]:
+
+        return cls._operations.keys()
 
 @OperationFactory.register_operations("add")
 class Addition(Operation):

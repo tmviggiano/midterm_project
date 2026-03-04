@@ -37,6 +37,7 @@ class Calculator:
 
         self.history: List[Calculation] = []
         self.operation_strategy: Optional[Operation] = None
+        self.operation_name: Optional[str] = None
         self.observers: List[HistoryObserver] = []
 
         self.undo_stack: List[CalculatorMemento] = []
@@ -86,7 +87,7 @@ class Calculator:
 
     def set_operation(self, operation: str) -> None:
 
-        # self.operation_strategy = operation
+        self.operation_name = operation
         self.operation_strategy = OperationFactory.create_operation(operation)
         logging.info(f"Set operation: {operation}")
 
@@ -102,7 +103,7 @@ class Calculator:
 
             result = self.operation_strategy.execute(validated_a, validated_b)
 
-            calculation = Calculation(operation_type=str(self.operation_strategy), 
+            calculation = Calculation(operation_type=str(self.operation_name), 
                                       operand1=validated_a,
                                       operand2=validated_b)
             
@@ -198,7 +199,7 @@ class Calculator:
     
     def show_history(self) -> List[str]:
 
-        return [f"{calc.operation}({calc.operand1}, {calc.operand2}) = {calc.result}"
+        return [f"{calc.operation_type}({calc.operand1}, {calc.operand2}) = {calc.result}"
             for calc in self.history]
     
     def clear_history(self) -> None:
