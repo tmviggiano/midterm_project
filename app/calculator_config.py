@@ -35,34 +35,28 @@ class CalculatorConfig:
         default_encoding: Optional[str] = None
         ):
 
-         # Set base directory to project root by default
         project_root = get_project_root()
         self.base_dir = base_dir or Path(
             os.getenv('CALCULATOR_BASE_DIR', str(project_root))
         ).resolve()
 
-        # Maximum history size
         self.max_history_size = max_history_size or int(
             os.getenv('CALCULATOR_MAX_HISTORY_SIZE', '1000')
         )
 
-        # Auto-save preference
         auto_save_env = os.getenv('CALCULATOR_AUTO_SAVE', 'true').lower()
         self.auto_save = auto_save if auto_save is not None else (
             auto_save_env == 'true' or auto_save_env == '1'
         )
 
-        # Calculation precision
         self.precision = precision or int(
             os.getenv('CALCULATOR_PRECISION', '10')
         )
 
-        # Maximum input value allowed
         self.max_input_value = max_input_value or Decimal(
             os.getenv('CALCULATOR_MAX_INPUT_VALUE', '1e999')
         )
 
-        # Default encoding for file operations
         self.default_encoding = default_encoding or os.getenv(
             'CALCULATOR_DEFAULT_ENCODING', 'utf-8'
         )
@@ -99,18 +93,9 @@ class CalculatorConfig:
         )).resolve()
 
     def validate(self) -> None:
-        """
-        Validate configuration settings.
-
-        Ensures that all configuration parameters meet the required criteria.
-        Raises ConfigurationError if any validation fails.
-
-        Raises:
-            ConfigurationError: If any configuration parameter is invalid.
-        """
         if self.max_history_size <= 0:
-            raise ConfigurationError("max_history_size must be positive")
+            raise ConfigurationError("Config: max_history_size - must be a positive value")
         if self.precision <= 0:
-            raise ConfigurationError("precision must be positive")
+            raise ConfigurationError("Config: precision - must be a positive")
         if self.max_input_value <= 0:
-            raise ConfigurationError("max_input_value must be positive")
+            raise ConfigurationError("Config: max_input_value - must be positive")
