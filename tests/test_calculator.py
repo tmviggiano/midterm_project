@@ -2,16 +2,14 @@ import datetime
 from pathlib import Path
 import pandas as pd
 import pytest
-from unittest.mock import MagicMock, Mock, patch, PropertyMock
+from unittest.mock import patch, PropertyMock
 from decimal import Decimal
 from tempfile import TemporaryDirectory
 from app.calculator import Calculator
-from app.calculator_repl import calculator_repl
 from app.calculator_config import CalculatorConfig
 from app.exceptions import OperationError, ValidationError
-from app.history import LoggingObserver, AutosaveObserver
-from app.operations import OperationFactory, Addition
-from app.calculator_memento import CalculatorMemento
+from app.history import LoggingObserver
+from app.operations import Addition
 
 
 @pytest.fixture
@@ -163,3 +161,45 @@ def test_get_history_dataframe(calculator):
 
 
     pd.testing.assert_frame_equal(df, expected_df)
+
+def test_undo(calculator):
+    calculator.set_operation('add')
+    calculator.perform_operation(1, 2)
+
+    result = calculator.undo()
+    assert result == True
+
+def test_undo_empty (calculator):
+
+    result = calculator.undo()
+    assert result == False
+
+def test_redo(calculator):
+    calculator.set_operation('add')
+    calculator.perform_operation(1, 2)
+
+    calculator.undo()
+    result = calculator.redo()
+    assert result == True
+
+def test_redo_empty (calculator):
+
+    result = calculator.redo()
+    assert result == False
+
+def test_clear_history(calculator):
+    calculator.set_operation('add')
+    calculator.perform_operation(1, 2)
+
+    assert len(calculator.history) ==1
+    calculator.clear_history()
+    assert len(calculator.history) ==0
+
+def test_show_history(calculator):
+    calculator.set_operation('add')
+    calculator.perform_operation(1, 2)
+
+    result = calculator.show_history()
+
+    expected = "add(1, 2) = 3"
+    assert result[0] == expected
